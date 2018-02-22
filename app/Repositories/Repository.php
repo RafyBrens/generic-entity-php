@@ -15,4 +15,18 @@ class Repository implements IRepository
         }
         return $result;
     }
+
+    public static function getByField($entity, $field)
+    {
+        $result = [];
+        $data = DB::table($entity->getTable())
+                        ->where($field, $entity->__get($field))
+                        ->get()
+                        ->toArray();
+
+        foreach ($data as $row) {
+            $result[] = get_object_vars($row);
+        }
+        return $result;
+    }
 }

@@ -105,23 +105,25 @@ class User implements Authenticatable, EntityInterface
 
     public static function getAll($entity)
     {
-        $removeFields = true;
-        $data = Repository::getAll($entity);
+        $noPrivateFields = true;
         $results = [];
+
+        $data = Repository::getAll($entity);
+        
+        foreach ($data as $result) {
+            $results[] = self::prepareEntity($result, $noPrivateFields);
+        }
+        return $results;
+    }
+
+    public static function getById($entity)
+    {
+        $results = [];
+        $data = Repository::getByField($entity, 'id');
+        
         foreach ($data as $result) {
             $results[] = self::prepareEntity($result, true);
         }
         return $results;
     }
-
-    public static function entityToArray($entities)
-    {
-        $array = [];
-        foreach ($entities as $entity)
-        {
-            $array[] = $entity->__toArray();
-        }
-        return $array;
-    }
 }
-    

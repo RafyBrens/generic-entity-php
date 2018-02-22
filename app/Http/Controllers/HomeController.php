@@ -12,22 +12,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $item = new Item();
         $user = new User();
-        $this->getAll($user);
-        $item->prepareEntity(['price' => 9]);
-        $this->printDD('item', $item);
-        $this->printDD('user', $user);
+        return User::entitiesToArray(User::getAll($user));
     }
 
-    public function getAll($user)
+    public function findById($id)
     {
-        $data = User::entityToArray(User::getAll($user));
-        dd($data);
-    }
-
-    public function printDD(string $ms, EntityInterface $entity)
-    {
-        $entity->printDD($ms, $entity);        
+        $user = new User();
+        $user->__set('id', $id);
+        return User::entitiesToArray(User::getById($user));
     }
 }

@@ -17,10 +17,7 @@ trait BaseEntity
     public function __get($name)
     {
         $this->ifIssetFields();
-        if (array_key_exists($name, $this->_fields)) {
-            return $this->_fields[$name];
-        }
-        return null;
+        return $this->{$name} ? : null;
     }
 
     public function __set($name, $value)
@@ -90,6 +87,15 @@ trait BaseEntity
         return $array;
     }
 
+    public static function entitiesToArray($entities)
+    {
+        $array = [];
+        foreach ($entities as $entity) {
+            $array[] = $entity->__toArray();
+        }
+        return $array;
+    }
+
     /**
      *
      * @throws \Exception
@@ -99,11 +105,6 @@ trait BaseEntity
         if (!(property_exists($this, '_fields'))) {
             throw new \Exception('No data set for fields');
         }
-    }
-
-    public function printDD($ms)
-    {
-        dump($ms, $this);
     }
 
     public function getAll()
